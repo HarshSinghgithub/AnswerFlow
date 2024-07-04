@@ -15,7 +15,7 @@ with open('answers.json', 'r') as f:
 
         
 def get_answer(user_query):
-  query_embedding = model.encode([user_query]).astype('float32')
+  query_embedding = embedding_model.encode([user_query]).astype('float32')
   k = 2
   D, I = db.search(query_embedding, k)
 
