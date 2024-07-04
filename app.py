@@ -8,9 +8,9 @@ from transformers import pipeline
 embedding_model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
 llm_model = "deepset/roberta-base-squad2"
 QA = pipeline('question-answering', model=llm_model, tokenizer=llm_model)
-db = faiss.read_index("AnswerSphere\faiss_index.index")
+db = faiss.read_index("faiss_index.index")
 
-with ("AnswerSphere\answers.json", 'r') as f:
+with ("answers.json", 'r') as f:
     answers = json.load(f)
 
         
