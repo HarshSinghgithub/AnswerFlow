@@ -6,7 +6,7 @@ from pinecone.grpc import PineconeGRPC as Pinecone
 from pinecone import ServerlessSpec
 import time
 
-API_KEY = st.secrets("API_KEY")
+API_KEY = st.secrets["API_KEY"]
 pc = Pinecone(api_key=API_KEY)
 index_name = 'semantic-search-fast'
 
