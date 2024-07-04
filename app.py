@@ -1,34 +1,38 @@
 import streamlit as st
 from sentence_transformers import SentenceTransformer
 import numpy as np
-import faiss
-import json
 from transformers import pipeline
+from pinecone.grpc import PineconeGRPC as Pinecone
+from pinecone import ServerlessSpec
+import time
+
+pc = Pinecone(api_key=API_KEY)
+index_name = 'semantic-search-fast'
 
 embedding_model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
 llm_model = "deepset/roberta-base-squad2"
 QA = pipeline('question-answering', model=llm_model, tokenizer=llm_model)
-db = faiss.read_index("faiss_index.index")
+db = pc.Index(index_name)
 
-with open('answers.json', 'r') as f:
-    answers = json.load(f)
 
         
 def get_answer(user_query):
-  query_embedding = embedding_model.encode([user_query]).astype('float32')
-  k = 2
-  D, I = db.search(query_embedding, k)
+  query_embedding = embedding_model.encode([user_query]).astype('float32')[0]
 
-  retrieved_answers = [answers[i] for i in I[0]]
+  answers = db.query(vector=query_embedding.tolist(), top_k=3, include_metadata=True)
 
-  context = " ".join(retrieved_answers)
+  context = []
+  for obj in answers['matches']:
+    context.append(obj['metadata']['answer'])
+
+  context = " ".join(context)
 
   QA_input = {
       'question': user_query,
       'context': context
   }
   res = QA(QA_input)
-  
+
   return res['answer']
 
 

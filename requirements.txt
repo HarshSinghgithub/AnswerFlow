@@ -1,4 +1,4 @@
 sentence_transformers==3.0.1
 numpy==1.25.2
-faiss-cpu==1.8.0.post1
 streamlit==1.36.0
+pinecone-client[grpc]==4.1.0
