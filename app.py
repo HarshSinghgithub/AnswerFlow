@@ -27,7 +27,7 @@ def get_answer(user_query):
       'question': user_query,
       'context': context
   }
-  res = nlp(QA_input)
+  res = QA(QA_input)
   
   return res['answer']
 
