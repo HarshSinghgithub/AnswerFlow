@@ -10,7 +10,7 @@ llm_model = "deepset/roberta-base-squad2"
 QA = pipeline('question-answering', model=llm_model, tokenizer=llm_model)
 db = faiss.read_index("faiss_index.index")
 
-with ("answers.json", 'r') as f:
+with ('answers.json', 'r') as f:
     answers = json.load(f)
 
         
