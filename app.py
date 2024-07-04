@@ -15,8 +15,6 @@ llm_model = "deepset/roberta-base-squad2"
 QA = pipeline('question-answering', model=llm_model, tokenizer=llm_model)
 db = pc.Index(index_name)
 
-
-        
 def get_answer(user_query):
   query_embedding = embedding_model.encode([user_query]).astype('float32')[0]
 
@@ -44,6 +42,9 @@ if st.button("Answer"):
     if ques:
         st.spinner("Generating Answer")
         ans = get_answer(ques)
-        st.write(ans)
+        if ans == " ":
+           st.write("I Don't know the answer")
+        else:
+            st.write(ans)
     else:
         st.write("Enter Question")
